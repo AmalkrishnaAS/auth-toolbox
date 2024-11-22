@@ -103,7 +103,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       email,
       password,
       redirect: true,
-      
     });
   } catch (error) {
     if (error instanceof AuthError) {

@@ -2,16 +2,22 @@
 import { useCurrentUser } from "@/hooks/use-current-user";
 import UserInfo from "@/components/UserInfo";
 import { useSession } from "next-auth/react";
+import { BeatLoader } from "react-spinners";
 
-export const clientPage = () => {
-    const user = useSession().data?.user
+const ClientPage = () => {
+    const { data: session, status } = useSession({ required: true });
     
-   
-
-    return (
-        <UserInfo user={user} label="Client Component" />
-
-    )
+    if (status === "loading") {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <BeatLoader color='black' />
+            </div>
+        );
     }
 
-export default clientPage;
+    return (
+        <UserInfo user={session?.user} label="Client Component" />
+    );
+}
+
+export default ClientPage;
