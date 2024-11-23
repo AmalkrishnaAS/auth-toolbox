@@ -1,13 +1,12 @@
 "use client"
-import { useCurrentUser } from "@/hooks/use-current-user";
 import UserInfo from "@/components/UserInfo";
-import { useSession } from "next-auth/react";
 import { BeatLoader } from "react-spinners";
+import { useAuth } from "@/hooks/use-auth";
 
-const ClientPage = () => {
-    const { data: session, status } = useSession({ required: true });
+const ClientPage = (): JSX.Element => {
+    const { user, isLoading } = useAuth();
     
-    if (status === "loading") {
+    if (isLoading) {
         return (
             <div className="flex h-full w-full items-center justify-center">
                 <BeatLoader color='black' />
@@ -15,8 +14,16 @@ const ClientPage = () => {
         );
     }
 
+    if (!user) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <p>Not signed in</p>
+            </div>
+        );
+    }
+
     return (
-        <UserInfo user={session?.user} label="Client Component" />
+        <UserInfo user={user} label="Client Component" />
     );
 }
 
